@@ -1,0 +1,91 @@
+Create a file called main.tf.
+Create a docker image resource and call it nginx_image.
+Set the name of the image to nginx:latest.
+Save and exit the file.
+
+Initialize Terraform.
+Plan the deploy and output a terraform plan called tf_image_plan.
+Apply the plan using tf_image_plan.
+
+ANS:
+[root@ip-172-31-9-125 terraform]# cat main.tf
+resource "docker_image" "nginx" {
+  name = "nginx:latest"
+}
+
+resource "docker_container" "nginx" {
+  image = docker_image.nginx.latest
+  name  = "tutorial"
+  ports {
+    internal = 80
+    external = 80
+  }
+}
+[root@ip-172-31-9-125 terraform]# terraform apply
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # docker_container.nginx will be created
+  + resource "docker_container" "nginx" {
+      + attach           = false
+      + bridge           = (known after apply)
+      + command          = (known after apply)
+      + container_logs   = (known after apply)
+      + dns              = (known after apply)
+      + dns_opts         = (known after apply)
+      + entrypoint       = (known after apply)
+      + exit_code        = (known after apply)
+      + gateway          = (known after apply)
+      + hostname         = (known after apply)
+      + id               = (known after apply)
+      + image            = (known after apply)
+      + ip_address       = (known after apply)
+      + ip_prefix_length = (known after apply)
+      + ipc_mode         = (known after apply)
+      + log_driver       = (known after apply)
+      + log_opts         = (known after apply)
+      + logs             = false
+      + must_run         = true
+      + name             = "tutorial"
+      + network_data     = (known after apply)
+      + read_only        = false
+      + restart          = "no"
+      + rm               = false
+      + shm_size         = (known after apply)
+      + start            = true
+      + user             = (known after apply)
+      + working_dir      = (known after apply)
+
+      + ports {
+          + external = 80
+          + internal = 80
+          + ip       = "0.0.0.0"
+          + protocol = "tcp"
+        }
+    }
+
+  # docker_image.nginx will be created
+  + resource "docker_image" "nginx" {
+      + id     = (known after apply)
+      + latest = (known after apply)
+      + name   = "nginx:latest"
+    }
+
+Plan: 2 to add, 0 to change, 0 to destroy.
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: yes
+
+docker_image.nginx: Creating...
+docker_image.nginx: Creation complete after 5s [id=sha256:4bb46517cac397bdb0bab6eba09b0e1f8e90ddd17cf99662997c3253531136f8nginx:latest]
+docker_container.nginx: Creating...
+docker_container.nginx: Creation complete after 1s [id=d64f253c10445caf7b9b3918b366ce3f414a3b9e72594537aa97ac8bfe3c296c]
+
+Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
